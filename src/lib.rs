@@ -1,4 +1,4 @@
-#![doc = ".github/README.md"]
+#![doc = include_str!("../.github/README.md")]
 // localizer-rs
 // Version: 1.1.0
 
@@ -52,7 +52,8 @@ use serde_json;
 ///
 /// # Parameters
 ///
-/// - `path`: The directory containing the translation files. The directory is relative to the path the executable was executed from.
+/// - `path`: The directory containing the translation files.
+///   The directory is relative to the path the executable was executed from.
 /// - `language`: The language to translate to.
 ///
 /// # Returns
@@ -70,7 +71,10 @@ use serde_json;
 /// ```
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Config {
+    /// The directory containing the translation files. The directory is relative to the path the
+    /// executable was executed from.
     pub path: String,
+    /// The language to translate to.
     pub language: String,
 }
 
@@ -84,7 +88,8 @@ impl Config {
     ///
     /// # Parameters
     ///
-    /// - `path`: The directory containing the translation files. The directory is relative to the path the executable was executed from.
+    /// - `path`: The directory containing the translation files.
+    ///   The directory is relative to the path the executable was executed from.
     /// - `language`: The language to translate to.
     ///
     /// # Returns
@@ -122,7 +127,8 @@ impl Config {
     /// # Parameters
     ///
     /// - `self`: The config object. This must be mutable.
-    /// - `str_path`: The directory containing the translation files. The directory is relative to the path the executable was executed from.
+    /// - `str_path`: The directory containing the translation files.
+    ///   The directory is relative to the path the executable was executed from.
     ///
     /// # Returns
     ///

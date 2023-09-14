@@ -58,8 +58,11 @@ use std::fmt;
 /// ```
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Error {
+    /// The errors name.
     pub name: String,
+    /// The error description.
     pub description: String,
+    /// The errors exit code.
     pub exit_code: i32,
 }
 
