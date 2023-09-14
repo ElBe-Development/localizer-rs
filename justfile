@@ -10,8 +10,7 @@ build *ARGUMENTS:
 
 # Removes temporary files
 clean:
-	rm -rf target
-	rm -rf Tools/__pycache__
+	cargo clean
 
 # Lints the rust source files
 lint *ARGUMENTS:
