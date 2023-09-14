@@ -38,27 +38,27 @@ To use localizer-rs, you need a directory (eg. `translations`) with your transla
 
 1. Import the localizer-rs crate:
 
-   ```rust
+    ```rust
 
-   use localizer_rs;
+    use localizer_rs;
 
-   ```
+    ```
 
 2. Create a new config object:
 
-   ```rust
+    ```rust
 
-   let config = localizer_rs::Config::new("DIRECTORY NAME", "LANGUAGE NAME");
+    let config = localizer_rs::Config::new("DIRECTORY NAME", "LANGUAGE NAME");
 
-   ```
+    ```
 
 3. Translate your text:
 
-   ```rust
+    ```rust
 
-   config.t("key", vec!["placeholder", "value"]);
+    config.t("key", vec!["placeholder", "value"]);
 
-   ```
+    ```
 
 ## Example
 
