@@ -16,7 +16,7 @@ categories = [
 	"internationalization",
 	"localization"
 ]
-publish = ["localizer-rs"]
+publish = true
 
 [dependencies]
 serde = "1.0.188"
