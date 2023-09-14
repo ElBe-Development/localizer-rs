@@ -1,5 +1,5 @@
 <h1 align="center">
-	localizer-rs
+    localizer-rs
 </h1>
 <h3 align="center">
     Localizer helps localize (translate) your rust applications using json files.
@@ -67,7 +67,7 @@ With the following `en.json` file.
 ```json
 
 {
-	"error": "{{color.red}}{{bold}}Error:{{end}} Something went wrong: {{details}}."
+    "error": "{{color.red}}{{bold}}Error:{{end}} Something went wrong: {{details}}."
 }
 
 ```
@@ -79,9 +79,9 @@ And the following rust code.
 use localizer_rs;
 
 fn main() {
-	let config: localizer_rs::Config = localizer_rs::Config::new("translations", "en");
+    let config: localizer_rs::Config = localizer_rs::Config::new("translations", "en");
 
-	println!("{:}", config.t("error", vec![("details", "Path not found")]));
+    println!("{:}", config.t("error", vec![("details", "Path not found")]));
 }
 
 ```
