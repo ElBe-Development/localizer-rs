@@ -22,7 +22,7 @@ and a pull request. See below for making changes on your own.
 1. Create a new issue with a summary of your proposed changes and more.
 2. Fork the repository.
 3. Implement your changes
-4. Test your changes. Run `cargo fmt`, `cargo check` ad `cargo clippy` to verify it works.
+4. Test your changes. Run `cargo fmt`, `cargo check` and `cargo clippy` to verify it works.
 5. Create a pull request from your fork.
 6. If it gets accepted, your changes will be in the next release.
 
