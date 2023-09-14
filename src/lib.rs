@@ -1,6 +1,6 @@
 #![doc = ".github/README.md"]
 // localizer-rs
-// Version: 1.0.0
+// Version: 1.1.0
 
 // Copyright (c) 2023-present ElBe Development.
 
