@@ -5,7 +5,7 @@
     Localizer helps localize (translate) your rust applications using json files.
 </h3>
 <p align="center">
-    <img src="https://img.shields.io/crates/v/qstash-rs">
+    <img src="https://img.shields.io/crates/v/localizer-rs">
     <img src="https://www.codefactor.io/repository/github/ElBe-Development/localizer-rs/badge">
     <img src="https://github.com/ElBe-Development/localizer-rs/actions/workflows/megalinter.yml/badge.svg?branch=main&event=push">
     <img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit">
