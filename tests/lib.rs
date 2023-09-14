@@ -1,5 +1,5 @@
 // localizer-rs tests
-// Version: 1.0.0-alpha1
+// Version: 1.0.0
 
 // Copyright (c) 2023-present ElBe Development.
 

@@ -22,6 +22,13 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+/////////////
+// EXPORTS //
+/////////////
+
+pub mod errors;
+
+
 ////////////////////////////////
 // IMPORTS AND USE STATEMENTS //
 ////////////////////////////////
