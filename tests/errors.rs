@@ -37,25 +37,35 @@ use localizer_rs;
 mod tests {
     #[test]
     fn test_error() {
-        let error: localizer_rs::errors::Error = localizer_rs::errors::Error::new("name", "description", 1);
+        let error: localizer_rs::errors::Error =
+            localizer_rs::errors::Error::new("name", "description", 1);
 
-        assert_eq!(error, localizer_rs::errors::Error {
-            name: "name".to_owned(),
-            description: "description".to_owned(),
-            exit_code: 1
-        });
+        assert_eq!(
+            error,
+            localizer_rs::errors::Error {
+                name: "name".to_owned(),
+                description: "description".to_owned(),
+                exit_code: 1
+            }
+        );
     }
 
     #[test]
     #[ignore]
     fn raise_helper() {
-        let error: localizer_rs::errors::Error = localizer_rs::errors::Error::new("name", "description", 1);
+        let error: localizer_rs::errors::Error =
+            localizer_rs::errors::Error::new("name", "description", 1);
         error.raise("details");
     }
 
     #[test]
     fn test_raise() {
-        let status = std::process::Command::new("cargo").args(&["test", "--", "--ignored"]).stdout(std::process::Stdio::null()).stderr(std::process::Stdio::null()).status().expect("Unable to run program");
+        let status = std::process::Command::new("cargo")
+            .args(&["test", "--", "--ignored"])
+            .stdout(std::process::Stdio::null())
+            .stderr(std::process::Stdio::null())
+            .status()
+            .expect("Unable to run program");
 
         assert_eq!(Some(1), status.code())
     }

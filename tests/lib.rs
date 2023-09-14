@@ -39,33 +39,43 @@ mod tests {
     fn test_config() {
         let config: localizer_rs::Config = localizer_rs::Config::new("examples/translations", "en");
 
-        assert_eq!(config, localizer_rs::Config {
-            path: "examples/translations".to_owned(),
-            language: "en".to_owned()
-        });
+        assert_eq!(
+            config,
+            localizer_rs::Config {
+                path: "examples/translations".to_owned(),
+                language: "en".to_owned()
+            }
+        );
     }
 
     #[test]
     fn test_set_path() {
-        let mut config: localizer_rs::Config = localizer_rs::Config::new("examples/translations", "en");
+        let mut config: localizer_rs::Config =
+            localizer_rs::Config::new("examples/translations", "en");
         config.set_path("examples");
 
-        assert_eq!(config, localizer_rs::Config {
-            path: "examples".to_owned(),
-            language: "en".to_owned()
-        });
-
+        assert_eq!(
+            config,
+            localizer_rs::Config {
+                path: "examples".to_owned(),
+                language: "en".to_owned()
+            }
+        );
     }
 
     #[test]
     fn test_set_language() {
-        let mut config: localizer_rs::Config = localizer_rs::Config::new("examples/translations", "en");
+        let mut config: localizer_rs::Config =
+            localizer_rs::Config::new("examples/translations", "en");
         config.set_language("not_en");
 
-        assert_eq!(config, localizer_rs::Config {
-            path: "examples/translations".to_owned(),
-            language: "not_en".to_owned()
-        });
+        assert_eq!(
+            config,
+            localizer_rs::Config {
+                path: "examples/translations".to_owned(),
+                language: "not_en".to_owned()
+            }
+        );
     }
 
     #[test]
@@ -73,6 +83,9 @@ mod tests {
         let config: localizer_rs::Config = localizer_rs::Config::new("examples/translations", "en");
         let translation: String = config.t("error", vec![("details", "Something went wrong")]);
 
-        assert_eq!(translation.as_str(), "\x1b[31m\x1b[1mError:\x1b[0m Something went wrong");
+        assert_eq!(
+            translation.as_str(),
+            "\x1b[31m\x1b[1mError:\x1b[0m Something went wrong"
+        );
     }
 }

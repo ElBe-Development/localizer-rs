@@ -96,7 +96,7 @@ impl Error {
         return Error {
             name: name.to_owned(),
             description: description.to_owned(),
-            exit_code: exit_code
+            exit_code: exit_code,
         };
     }
 
