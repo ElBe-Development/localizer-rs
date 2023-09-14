@@ -36,7 +36,8 @@ pub mod errors;
 use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
-use std::process::exit;
+
+use errors as error_lib;
 
 use serde_json;
 
@@ -70,7 +71,7 @@ use serde_json;
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Config {
     pub path: String,
-    pub language: String
+    pub language: String,
 }
 
 
@@ -107,8 +108,9 @@ impl Config {
     pub fn new(path: &str, language: &str) -> Config {
         let mut config: Config = Config {
             path: "".to_string(),
-            language: "".to_string()
-        }.to_owned();
+            language: "".to_string(),
+        }
+        .to_owned();
         config = config.set_language(language).to_owned();
         config = config.set_path(path).to_owned();
 
@@ -147,17 +149,27 @@ impl Config {
         match path.try_exists() {
             Ok(value) => {
                 if !value {
-                    eprintln!("Translation path {:?} does not exist", str_path);
-                    exit(1);
+                    let error: error_lib::Error =
+                        error_lib::Error::new("OS Error", "Translation path was not found", 1);
+                    error.raise(format!("Path: {:?}", str_path).as_str());
                 }
-            },
-            Err(error) => {
-                eprintln!("Can't open translation path {:?}: {}", str_path, error);
-                exit(2);
+            }
+            Err(_error) => {
+                let error: error_lib::Error =
+                    error_lib::Error::new("OS Error", "Could not open path", 2);
+                error.raise(format!("Path: {:?}\nDetails: {}", str_path, _error).as_str());
             }
         }
 
-        self.path = String::from(path.to_owned().to_str().expect("Expected valid path"));
+        self.path = String::from(match path.to_owned().to_str() {
+            Some(value) => value,
+            None => {
+                let error: error_lib::Error =
+                    error_lib::Error::new("OS Error", "Path does not seem to be valid", 3);
+                error.raise(format!("Path: {:?}", str_path).as_str());
+                ""
+            }
+        });
         return self;
     }
 
@@ -217,39 +229,130 @@ impl Config {
 
     fn translate<T>(&self, key: &str, mut arguments: Vec<(&str, &str)>) -> String
     where
-        T: serde::Serialize + for<'de> serde::Deserialize<'de>
+        T: serde::Serialize + for<'de> serde::Deserialize<'de>,
     {
         let mut colors: Vec<(&str, &str)> = vec![
             // Formatting codes
-            ("end", "\x1b[0m"), ("bold", "\x1b[1m"), ("italic", "\x1b[3m"), ("underline", "\x1b[4m"), ("overline", "\x1b[53m"),
+            ("end", "\x1b[0m"),
+            ("bold", "\x1b[1m"),
+            ("italic", "\x1b[3m"),
+            ("underline", "\x1b[4m"),
+            ("overline", "\x1b[53m"),
 
             // Foreground colors
-            ("color.black", "\x1b[30m"), ("color.red", "\x1b[31m"), ("color.green", "\x1b[32m"), ("color.yellow", "\x1b[33m"),
-            ("color.blue", "\x1b[34m"), ("color.magenta", "\x1b[35m"), ("color.cyan", "\x1b[36m"), ("color.white", "\x1b[37m"),
+            ("color.black", "\x1b[30m"),
+            ("color.red", "\x1b[31m"),
+            ("color.green", "\x1b[32m"),
+            ("color.yellow", "\x1b[33m"),
+            ("color.blue", "\x1b[34m"),
+            ("color.magenta", "\x1b[35m"),
+            ("color.cyan", "\x1b[36m"),
+            ("color.white", "\x1b[37m"),
 
             // Bright foreground colors
-            ("color.bright_black", "\x1b[90m"), ("color.bright_red", "\x1b[91m"), ("color.bright_green", "\x1b[92m"),
-            ("color.bright_yellow", "\x1b[93m"), ("color.bright_blue", "\x1b[94m"), ("color.bright_magenta", "\x1b[95m"),
-            ("color.bright_cyan", "\x1b[96m"), ("color.bright_white", "\x1b[97m"),
+            ("color.bright_black", "\x1b[90m"),
+            ("color.bright_red", "\x1b[91m"),
+            ("color.bright_green", "\x1b[92m"),
+            ("color.bright_yellow", "\x1b[93m"),
+            ("color.bright_blue", "\x1b[94m"),
+            ("color.bright_magenta", "\x1b[95m"),
+            ("color.bright_cyan", "\x1b[96m"),
+            ("color.bright_white", "\x1b[97m"),
 
             // Background colors
-            ("back.black", "\x1b[40m"), ("back.red", "\x1b[41m"), ("back.green", "\x1b[42m"), ("back.yellow", "\x1b[43m"),
-            ("back.blue", "\x1b[44m"), ("back.magenta", "\x1b[45m"), ("back.cyan", "\x1b[46m"), ("back.white", "\x1b[47m"),
+            ("back.black", "\x1b[40m"),
+            ("back.red", "\x1b[41m"),
+            ("back.green", "\x1b[42m"),
+            ("back.yellow", "\x1b[43m"),
+            ("back.blue", "\x1b[44m"),
+            ("back.magenta", "\x1b[45m"),
+            ("back.cyan", "\x1b[46m"),
+            ("back.white", "\x1b[47m"),
 
             // Bright background colors
-            ("back.bright_black", "\x1b[100m"), ("back.bright_red", "\x1b[101m"), ("back.bright_green", "\x1b[102m"),
-            ("back.bright_yellow", "\x1b[103m"), ("back.bright_blue", "\x1b[104m"), ("back.bright_magenta", "\x1b[105m"),
-            ("back.bright_cyan", "\x1b[106m"), ("back.bright_white", "\x1b[107m"),
+            ("back.bright_black", "\x1b[100m"),
+            ("back.bright_red", "\x1b[101m"),
+            ("back.bright_green", "\x1b[102m"),
+            ("back.bright_yellow", "\x1b[103m"),
+            ("back.bright_blue", "\x1b[104m"),
+            ("back.bright_magenta", "\x1b[105m"),
+            ("back.bright_cyan", "\x1b[106m"),
+            ("back.bright_white", "\x1b[107m"),
         ];
         arguments.append(&mut colors);
 
-        let file: File = File::open(Path::new(format!("./{}/{}.json", &self.path, &self.language).as_str())).unwrap();
+        let file: File = match File::open(Path::new(
+            format!("./{}/{}.json", &self.path, &self.language).as_str(),
+        )) {
+            Ok(value) => value,
+            Err(_error) => {
+                let error: errors::Error =
+                    errors::Error::new("OS Error", "Could not open translation file", 4);
+                error.raise(
+                    format!(
+                        "File: ./{}/{}.json\nError: {}",
+                        &self.path, &self.language, _error
+                    )
+                    .as_str(),
+                );
+
+                return "".to_owned();
+            }
+        };
         let reader: BufReader<File> = BufReader::new(file);
 
-        let json: serde_json::Value = serde_json::to_value::<T>(serde_json::from_reader::<BufReader<File>, T>(reader).unwrap()).unwrap().to_owned();
+        let json: serde_json::Value = match serde_json::to_value::<T>(
+            match serde_json::from_reader::<BufReader<File>, T>(reader) {
+                Ok(value) => value,
+                Err(_error) => {
+                    let error: errors::Error = errors::Error::new(
+                        "Parsing error",
+                        "Translation file could not be parsed",
+                        5,
+                    );
+                    error.raise(
+                        format!(
+                            "File: ./{}/{}.json\nError: {}",
+                            &self.path, &self.language, _error
+                        )
+                        .as_str(),
+                    );
+
+                    return "".to_owned();
+                }
+            },
+        ) {
+            Ok(value) => value,
+            Err(_error) => {
+                let error: errors::Error =
+                    errors::Error::new("Converting error", "Could not convert to json value", 6);
+                error.raise(
+                    format!(
+                        "File: ./{}/{}.json\nError: {}",
+                        &self.path, &self.language, _error
+                    )
+                    .as_str(),
+                );
+
+                return "".to_owned();
+            }
+        }
+        .to_owned();
         let mut result: String = match json[key].as_str() {
             Some(value) => value.to_string(),
-            None => "".to_string()
+            None => {
+                let error: errors::Error =
+                    errors::Error::new("Indexing error", "Could not index json value", 6);
+                error.raise(
+                    format!(
+                        "Index: {}\nFile: ./{}/{}.json",
+                        key, &self.path, &self.language
+                    )
+                    .as_str(),
+                );
+
+                return "".to_owned();
+            }
         };
 
         for (key, value) in arguments {
