@@ -112,7 +112,7 @@ impl Config {
     ///
     /// # Parameters
     ///
-    /// - `self`: The config object.
+    /// - `self`: The config object. This must be mutable.
     /// - `str_path`: The directory containing the translation files. The directory is relative to the path the executable was executed from.
     ///
     /// # Returns
@@ -158,7 +158,7 @@ impl Config {
     ///
     /// # Parameters
     ///
-    /// - `self`: The config object.
+    /// - `self`: The config object. This must be mutable.
     /// - `language`: The language to translate to.
     ///
     /// # Returns
