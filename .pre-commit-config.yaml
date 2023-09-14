@@ -1,0 +1,38 @@
+---
+repos:
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v4.4.0
+      hooks:
+          - id: check-added-large-files
+          - id: check-executables-have-shebangs
+          - id: check-json
+          - id: check-merge-conflict
+          - id: check-shebang-scripts-are-executable
+          - id: check-toml
+          - id: check-yaml
+          - id: pretty-format-json
+            args: [--autofix]
+          - id: requirements-txt-fixer
+          - id: trailing-whitespace
+    - repo: https://github.com/jorisroovers/gitlint
+      rev: v0.19.1
+      hooks:
+          - id: gitlint
+            args: [--config=.github\.gitlint, --msg-filename]
+    - repo: https://github.com/doublify/pre-commit-rust
+      rev: v1.0
+      hooks:
+          - id: fmt
+          - id: cargo-check
+    - repo: local
+      hooks:
+          - id: clippy
+            name: Run clippy linter
+            entry: cargo clippy -- -A non_snake_case
+            language: system
+            pass_filenames: false
+ci:
+    skip:
+        - fmt
+        - cargo-check
+        - clippy

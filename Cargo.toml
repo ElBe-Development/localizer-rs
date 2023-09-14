@@ -1,0 +1,23 @@
+[package]
+name = "localizer-rs"
+description = "Localizer helps localize (translate) your rust applications using json files."
+version = "1.0.0"
+authors = [
+	"ElBe-Plaq <elbe.dev.plaq@gmail.com>"
+]
+edition = "2021"
+rust-version = "1.69"
+documentation = "https://docs.rs/localizer_rs/"
+readme = ".github/README.md"
+repository = "https://github.com/ElBe-Development/localizer-rs/"
+license-file = "LICENSE.txt"
+keywords = ["i18n", "L10n", "json", "local", "translation"]
+categories = [
+	"internationalization",
+	"localization"
+]
+publish = ["localizer-rs"]
+
+[dependencies]
+serde = "1.0.188"
+serde_json = "1.0.106"

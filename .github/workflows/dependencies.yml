@@ -1,0 +1,46 @@
+---
+name: Dependencies
+permissions: read-all
+
+on:
+    push:
+        paths: ["dev-requirements.txt", "Cargo.toml"]
+
+    pull_request:
+        paths: ["dev-requirements.txt", "Cargo.toml"]
+
+jobs:
+    install-python-dependencies:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                python-version: ["3.8"]
+        steps:
+            - uses: actions/checkout@v3
+            - name: Set up Python ${{ matrix.python-version }}
+              uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ matrix.python-version }}
+            - name: Install dependencies from txt files
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install -r dev-requirements.txt
+    install-rust-dependencies:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Install dependencies from Cargo.toml
+              run: cargo update
+            - name: Install dev-dependencies from Cargo.toml
+              run: cargo test --no-run
+              # ^ This is the only way to install dev-dependencies
+
+    dependency-review:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v3
+              if: ${{ github.event_name != 'push' }}
+            - name: Dependency Review
+              if: ${{ github.event_name != 'push' }}
+              uses: actions/dependency-review-action@v3
