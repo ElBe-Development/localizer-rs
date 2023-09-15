@@ -1,0 +1,10 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 50%
+        threshold: 1%
+
+comment:
+    require_changes: true
+    require_ci_to_pass: false
