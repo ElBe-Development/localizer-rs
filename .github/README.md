@@ -38,7 +38,7 @@ To use localizer-rs, you need a directory (eg. `translations`) with your transla
 
 1. Import the localizer-rs crate:
 
-    ```rust
+    ```rust,ignore
 
     use localizer_rs;
 
@@ -46,7 +46,7 @@ To use localizer-rs, you need a directory (eg. `translations`) with your transla
 
 2. Create a new config object:
 
-    ```rust
+    ```rust,ignore
 
     let config = localizer_rs::Config::new("DIRECTORY NAME", "LANGUAGE NAME");
 
@@ -54,7 +54,7 @@ To use localizer-rs, you need a directory (eg. `translations`) with your transla
 
 3. Translate your text:
 
-    ```rust
+    ```rust,ignore
 
     config.t("key", vec!["placeholder", "value"]);
 
@@ -74,7 +74,7 @@ With the following `en.json` file.
 
 And the following rust code.
 
-```rust
+```rust,ignore
 
 use localizer_rs;
 
