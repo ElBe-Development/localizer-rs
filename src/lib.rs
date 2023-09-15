@@ -1,6 +1,6 @@
 #[doc = include_str!("../.github/README.md")]
 // localizer-rs
-// Version: 1.1.0
+// Version: 1.1.1
 
 // Copyright (c) 2023-present ElBe Development.
 
