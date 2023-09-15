@@ -1,4 +1,4 @@
-#![doc = include_str!("../.github/README.md")]
+#[doc = include_str!("../.github/README.md")]
 // localizer-rs
 // Version: 1.1.0
 
@@ -36,8 +36,6 @@ pub mod errors;
 use std::fs::File;
 use std::io::BufReader;
 use std::path::Path;
-
-use errors as error_lib;
 
 use serde_json;
 
@@ -155,14 +153,14 @@ impl Config {
         match path.try_exists() {
             Ok(value) => {
                 if !value {
-                    let error: error_lib::Error =
-                        error_lib::Error::new("OS Error", "Translation path was not found", 1);
+                    let error: errors::Error =
+                        errors::Error::new("OS Error", "Translation path was not found", 1);
                     error.raise(format!("Path: {:?}", str_path).as_str());
                 }
             }
             Err(_error) => {
-                let error: error_lib::Error =
-                    error_lib::Error::new("OS Error", "Could not open path", 2);
+                let error: errors::Error =
+                    errors::Error::new("OS Error", "Could not open path", 2);
                 error.raise(format!("Path: {:?}\nDetails: {}", str_path, _error).as_str());
             }
         }
@@ -170,8 +168,8 @@ impl Config {
         self.path = String::from(match path.to_owned().to_str() {
             Some(value) => value,
             None => {
-                let error: error_lib::Error =
-                    error_lib::Error::new("OS Error", "Path does not seem to be valid", 3);
+                let error: errors::Error =
+                    errors::Error::new("OS Error", "Path does not seem to be valid", 3);
                 error.raise(format!("Path: {:?}", str_path).as_str());
                 ""
             }
