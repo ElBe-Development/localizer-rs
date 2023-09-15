@@ -1,4 +1,4 @@
-#[doc = include_str!("../.github/README.md")]
+#![doc = include_str!("../.github/README.md")]
 // localizer-rs
 // Version: 1.1.1
 
