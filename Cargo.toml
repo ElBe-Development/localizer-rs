@@ -11,7 +11,6 @@ documentation = "https://docs.rs/localizer_rs/"
 readme = ".github/README.md"
 repository = "https://github.com/ElBe-Development/localizer-rs/"
 license = "MIT"
-license-file = "LICENSE.txt"
 keywords = ["i18n", "L10n", "json", "local", "translation"]
 categories = [
 	"internationalization",
