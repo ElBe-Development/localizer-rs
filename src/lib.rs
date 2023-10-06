@@ -1,6 +1,6 @@
 #![doc = include_str!("../.github/README.md")]
 // localizer-rs
-// Version: 1.1.1
+// Version: 1.2.0
 
 // Copyright (c) 2023-present ElBe Development.
 
@@ -159,8 +159,7 @@ impl Config {
                 }
             }
             Err(_error) => {
-                let error: errors::Error =
-                    errors::Error::new("OS Error", "Could not open path", 2);
+                let error: errors::Error = errors::Error::new("OS Error", "Could not open path", 2);
                 error.raise(format!("Path: {:?}\nDetails: {}", str_path, _error).as_str());
             }
         }
@@ -226,15 +225,49 @@ impl Config {
     ///
     /// # See also
     ///
+    /// - [`t!()`]
     /// - [`Config`]
     pub fn t(&self, key: &str, arguments: Vec<(&str, &str)>) -> String {
-        return self.translate::<serde_json::Value>(key, arguments);
+        return self.translate(key, arguments);
     }
 
-    fn translate<T>(&self, key: &str, mut arguments: Vec<(&str, &str)>) -> String
-    where
-        T: serde::Serialize + for<'de> serde::Deserialize<'de>,
-    {
+    /// Translates the specified key in the language specified in the config.
+    ///
+    /// # Parameters
+    ///
+    /// - `self`: The config object.
+    /// - `key`: The key to translate to.
+    /// - `arguments`: The arguments to replace.
+    ///
+    /// # Returns
+    ///
+    /// A `String` containing the translated value.
+    ///
+    /// # Raises
+    ///
+    /// This method throws an exception and exits if
+    ///
+    /// - The translation file could not be found
+    /// - The translation file could not be opened
+    /// - The translation file could not be parsed
+    /// - The parsed json could not be converted to a json value
+    /// - The converted json could not be indexed
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// # use localizer_rs;
+    /// # let config: localizer_rs::Config = localizer_rs::Config::new("examples/translations", "en");
+    /// config.translate("test", vec![]);
+    /// ```
+    ///
+    /// # See also
+    ///
+    /// - [`t!()`]
+    /// - [`Config`]
+    /// - [`Config::t()`]
+    /// - [`serde_json`]
+    pub fn translate(&self, key: &str, mut arguments: Vec<(&str, &str)>) -> String {
         let mut colors: Vec<(&str, &str)> = vec![
             // Formatting codes
             ("end", "\x1b[0m"),
@@ -305,8 +338,8 @@ impl Config {
         };
         let reader: BufReader<File> = BufReader::new(file);
 
-        let json: serde_json::Value = match serde_json::to_value::<T>(
-            match serde_json::from_reader::<BufReader<File>, T>(reader) {
+        let json: serde_json::Value = match serde_json::to_value::<serde_json::Value>(
+            match serde_json::from_reader::<BufReader<File>, serde_json::Value>(reader) {
                 Ok(value) => value,
                 Err(_error) => {
                     let error: errors::Error = errors::Error::new(
@@ -365,4 +398,51 @@ impl Config {
 
         return result;
     }
+}
+
+
+/// Translates the specified key in the language specified in the config.
+///
+/// # Parameters
+///
+/// - `config`: The config object.
+/// - `key`: The key to translate to.
+/// - `arguments`: Optional parameter. The arguments to replace. Has to be of type `"name" = "value"`.
+///
+/// # Returns
+///
+/// A `String` containing the translated value.
+///
+/// # Examples
+///
+/// ```rust
+/// # use localizer_rs;
+/// # let config: localizer_rs::Config = localizer_rs::Config::new("examples/translations", "en");
+/// localizer_rs::t!(config, "test");
+/// localizer_rs::t!(config, "test", "variable" = "content");
+/// ```
+///
+/// # See also
+///
+/// - [`Config`]
+/// - [`Config::t()`]
+#[macro_export]
+macro_rules! t {
+    ($config:expr, $key:expr) => {
+        {
+            $config.t($key, vec![])
+        }
+    };
+
+    ($config:expr, $key:expr, $($argument_name:literal = $argument_value:literal),* $(,)?) => {
+        {
+            let mut arguments: Vec<(&str, &str)> = vec![];
+
+            $(
+                arguments.push(($argument_name, $argument_value));
+            )*
+
+            $config.t($key, arguments)
+        }
+    };
 }

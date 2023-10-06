@@ -1,5 +1,5 @@
 // localizer-rs tests
-// Version: 1.1.1
+// Version: 1.2.0
 
 // Copyright (c) 2023-present ElBe Development.
 
@@ -81,7 +81,31 @@ mod tests {
     #[test]
     fn test_translate() {
         let config: localizer_rs::Config = localizer_rs::Config::new("examples/translations", "en");
+        let translation: String =
+            config.translate("error", vec![("details", "Something went wrong")]);
+
+        assert_eq!(
+            translation.as_str(),
+            "\x1b[31m\x1b[1mError:\x1b[0m Something went wrong"
+        );
+    }
+
+    #[test]
+    fn test_translate_t() {
+        let config: localizer_rs::Config = localizer_rs::Config::new("examples/translations", "en");
         let translation: String = config.t("error", vec![("details", "Something went wrong")]);
+
+        assert_eq!(
+            translation.as_str(),
+            "\x1b[31m\x1b[1mError:\x1b[0m Something went wrong"
+        );
+    }
+
+    #[test]
+    fn test_translate_macro() {
+        let config: localizer_rs::Config = localizer_rs::Config::new("examples/translations", "en");
+        let translation: String =
+            localizer_rs::t!(config, "error", "details" = "Something went wrong");
 
         assert_eq!(
             translation.as_str(),

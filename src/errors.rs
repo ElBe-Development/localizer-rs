@@ -1,3 +1,4 @@
+#![doc = include_str!("../.github/errors.md")]
 // localizer-rs errors
 // Version: 1.1.1
 
@@ -66,7 +67,31 @@ pub struct Error {
     pub exit_code: i32,
 }
 
+/// Display implementation for the error object.
 impl fmt::Display for Error {
+    /// Format implementation for the error object.
+    ///
+    /// # Parameters
+    ///
+    /// - `self`: The error object.
+    /// - `f`: The [`fmt::Formatter`] to use.
+    ///
+    /// # Returns
+    ///
+    /// A [`fmt::Result`] containing the formatted error message.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// # use localizer_rs;
+    /// # let error = localizer_rs::errors::Error::new("name", "description", 1);
+    /// println!("{}", error);
+    /// ```
+    ///
+    /// # See also
+    ///
+    /// - [`fmt::Display`]
+    /// - [`Error`]
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "\x1b[31;1m{}\x1b[0m: {}", self.name, self.description)
     }

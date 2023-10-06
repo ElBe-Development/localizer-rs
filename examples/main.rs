@@ -5,15 +5,16 @@ fn main() {
 
     println!(
         "{:}",
-        config.t(
+        localizer_rs::t!(
+            config,
             "error",
-            vec![("details", "Something went wrong when trying to do stuff")]
+            "details" = "Something went wrong when trying to do stuff"
         )
     );
     println!(
         "{:}",
-        config.t("success", vec![("balance", "$10"), ("user", "John Doe")])
+        localizer_rs::t!(config, "success", "balance" = "$10", "user" = "John Doe")
     );
 
-    println!("{:}", config.t("all", vec![]));
+    println!("{:}", localizer_rs::t!(config, "all"));
 }

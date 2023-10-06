@@ -39,25 +39,19 @@ To use localizer-rs, you need a directory (eg. `translations`) with your transla
 1. Import the localizer-rs crate:
 
     ```rust,ignore
-
     use localizer_rs;
-
     ```
 
 2. Create a new config object:
 
     ```rust,ignore
-
-    let config = localizer_rs::Config::new("DIRECTORY NAME", "LANGUAGE NAME");
-
+    let config = localizer_rs::Config::new("translations", "en");
     ```
 
 3. Translate your text:
 
     ```rust,ignore
-
-    config.t("key", vec!["placeholder", "value"]);
-
+    localizer_rs::t!(config, "key", "placeholder" ="value");
     ```
 
 ## Example
@@ -65,33 +59,27 @@ To use localizer-rs, you need a directory (eg. `translations`) with your transla
 With the following `en.json` file.
 
 ```json
-
 {
     "error": "{{color.red}}{{bold}}Error:{{end}} Something went wrong: {{details}}."
 }
-
 ```
 
 And the following rust code.
 
 ```rust,ignore
-
 use localizer_rs;
 
 fn main() {
     let config: localizer_rs::Config = localizer_rs::Config::new("translations", "en");
 
-    println!("{:}", config.t("error", vec![("details", "Path not found")]));
+    println!("{:}", localizer_rs::t!(config, "error", "details" = "Path not found"));
 }
-
 ```
 
 You will get the following output:
 
 ```bash
-
 Error: Something went wrong: Path not found.
-
 ```
 
 Where `Error:` is red and bold.
